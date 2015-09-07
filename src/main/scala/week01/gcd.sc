@@ -5,7 +5,7 @@ import scala.annotation.tailrec
 object gcd {
   @tailrec
   def gcd(a: Int, b: Int): Int =
-    if (b == 0) 0 else gcd(b, a % b)
+    if (b == 0) a else gcd(b, a % b)
 
   println(14 % 21)
 
