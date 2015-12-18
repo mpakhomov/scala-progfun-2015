@@ -1,4 +1,4 @@
-import week04._
+import progfun.week04._
 
 def succ(n: Int): Int = n + 1
 val f1 = new Function[Int, Int] {

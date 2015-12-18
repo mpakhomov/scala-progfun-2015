@@ -1,11 +1,19 @@
-package week03
-
 import scala.annotation.tailrec
 
-/**
- * @author mpakhomov
- * @since 9/9/15
- */
+//import progfun.week02.Rational
+
+//import progfun.week02.Rational
+//object rationals {
+val x = new Rational(1,3)
+val y = new Rational(5,7)
+val z = new Rational(3,2)
+x.sub(y).sub(z)
+y.add(y)
+x.less(y)
+x.max(y)
+val q = new Rational(5)
+//val strange = new Rational(1, 0)
+//}
 class Rational(x: Int, y: Int) {
   require(y != 0, "denominator must be non-zero")
 
@@ -37,3 +45,5 @@ class Rational(x: Int, y: Int) {
 
   override def toString = (numer / g) + "/" + (denom / g)
 }
+
+

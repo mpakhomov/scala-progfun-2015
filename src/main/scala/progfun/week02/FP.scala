@@ -1,4 +1,4 @@
-package week02
+package progfun.week02
 
 import scala.annotation.tailrec
 import scala.math._

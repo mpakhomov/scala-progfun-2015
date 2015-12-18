@@ -1,4 +1,4 @@
-import week04.List
+import progfun.week04.List
 
 List[Int]()
 List[Int](1)

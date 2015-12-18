@@ -1,4 +1,4 @@
-import week03.Rational
+import progfun.week03.Rational
 
 object scratch {
   new Rational(1, 2)

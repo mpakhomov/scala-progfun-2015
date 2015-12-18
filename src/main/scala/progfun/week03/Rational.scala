@@ -1,19 +1,11 @@
+package progfun.week03
+
 import scala.annotation.tailrec
 
-//import week02.Rational
-
-//import week02.Rational
-//object rationals {
-val x = new Rational(1,3)
-val y = new Rational(5,7)
-val z = new Rational(3,2)
-x - y - z
-y + y
-x < y
-x max y
-val q = new Rational(5)
-//val strange = new Rational(1, 0)
-//}
+/**
+ * @author mpakhomov
+ * @since 9/9/15
+ */
 class Rational(x: Int, y: Int) {
   require(y != 0, "denominator must be non-zero")
 
@@ -28,22 +20,20 @@ class Rational(x: Int, y: Int) {
     if (b == 0) a else gcd(b, a % b)
   private val g = gcd(x, y)
 
-  def +(that: Rational) : Rational =
+  def add(that: Rational) : Rational =
     new Rational(
       numer * that.denom + that.numer * denom,
       denom * that.denom)
 
-  def unary_- : Rational = new Rational(-numer, denom)
+  def neg: Rational = new Rational(-numer, denom)
 
-  def - (that: Rational) : Rational = this + -that
+  def sub(that: Rational) : Rational = add(that.neg)
 
-  def < (that: Rational): Boolean =
+  def less(that: Rational): Boolean =
     numer * that.denom < that.numer * denom
 
   def max(that: Rational): Rational =
-    if (this < that) that else this
+    if (this.less(that)) that else this
 
   override def toString = (numer / g) + "/" + (denom / g)
 }
-
-

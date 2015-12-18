@@ -15,3 +15,5 @@ for (i <- 1 to 14) {
 }
 
 pattern.findFirstIn(str)
+val Pattern = "([a-cA-C])".r
+Pattern.findAllIn("car").mkString(", ")

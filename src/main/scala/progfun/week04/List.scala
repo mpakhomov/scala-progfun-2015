@@ -1,4 +1,4 @@
-package week04
+package progfun.week04
 
 /**
  * @author mpakhomov

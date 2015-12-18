@@ -1,4 +1,4 @@
-package week04.idealized
+package progfun.week04.idealized
 
 /**
  * @author mpakhomov

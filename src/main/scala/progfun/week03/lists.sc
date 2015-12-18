@@ -1,4 +1,4 @@
-import week03._
+import progfun.week03._
 import scala.annotation.tailrec
 
 object nth {
