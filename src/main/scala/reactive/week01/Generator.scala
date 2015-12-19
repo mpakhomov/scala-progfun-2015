@@ -23,19 +23,19 @@ case class Inner(left: Tree, right: Tree) extends Tree
 case class Leaf(x: Int) extends Tree
 
 object Generator {
-  val integers = new Generator[Int] {
+  val integers: Generator[Int] = new Generator[Int] {
     val rand = new java.util.Random
     def generate = rand.nextInt()
   }
 
-  val booleans = for (x <- integers) yield x > 0
+  val booleans: Generator[Boolean] = for (x <- integers) yield x > 0
 
-//  def pairs[T, U](t: Generator[T], u: Generator[U]) =
+//  def pairs[T, U](t: Generator[T], u: Generator[U]): Generator[(T, U)] =
 //    for {
 //      x <- t
 //      y <- t
 //    } yield (x, y)
-  def pairs[T, U](t: Generator[T], u: Generator[U]) = t flatMap {
+  def pairs[T, U](t: Generator[T], u: Generator[U]): Generator[(T, U)] = t flatMap {
     (x: T) => u map { (y: U) => (x, y) }
   }
 
@@ -61,6 +61,28 @@ object Generator {
     tail <- lists
   } yield head :: tail
 
+  def leafs: Generator[Leaf] = for { // the same as integers map { i => Leaf(i) }
+    i <- integers
+  } yield Leaf(i)
+
+  def inners: Generator[Inner] = for {
+    l <- trees
+    r <- trees
+  } yield Inner(l, r)
+
+  def trees: Generator[Tree] = for {
+    isLeaf <- booleans
+    tree <- if (isLeaf) leafs else inners
+  } yield tree
+
+  def test[T](r: Generator[T], noTimes: Int = 100)(test: T => Boolean) {
+    for (_ <- 0 until noTimes) {
+        val value = r.generate
+        assert(test(value), s"Test failed for: $value")
+    }
+    println(s"Test passed $noTimes times")
+  }
+
 }
 
 object GeneratorTest extends App {
@@ -75,14 +97,6 @@ object GeneratorTest extends App {
 
   1 to 5 foreach { _ => println(listGenerator.generate) }
 // for (i <- 1 to 5) println(listGenerator.generate)
-//   (1 to 5) map { i  => println(listGenerator.generate) }
-
+// (1 to 5) map { i  => println(listGenerator.generate) }
 }
 
-//val booleans = new Generator[Boolean] {
-//  def generate = integers.generate > 0
-//}
-
-//val pair = new Generator[(Int, Int)] {
-//  def generate = (integers.generate, integers.generate)
-//}
