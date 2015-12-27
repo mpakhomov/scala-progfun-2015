@@ -19,9 +19,9 @@ class Signal[T](expr: => T) {
   }
 
   protected def computeValue(): Unit = {
-    val newValue = caller.withValue(this)(myExpr)
-    if (myValue != newValue()) {
-      myValue = newValue()
+    val newValue: T = caller.withValue(this)(myExpr())
+    if (myValue != newValue) {
+      myValue = newValue
       val obs = observers
       observers = Set()
       obs.foreach(_.computeValue())

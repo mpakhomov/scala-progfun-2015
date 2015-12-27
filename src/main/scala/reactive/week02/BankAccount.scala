@@ -1,6 +1,7 @@
 package reactive.week02
 
-import frp.Var
+import frpodersky.Var
+
 
 /**
   * @author mpakhomov
@@ -16,11 +17,10 @@ class BankAccount {
     }
   }
 
-  def withdraw(amount: Int): Int = 
+  def withdraw(amount: Int): Unit =
     if (0 < amount && amount <= balance()) {
       val b = balance()
       balance() = b - amount
-      balance()
     } else throw new Error("Insufficient funds")
 
 }
