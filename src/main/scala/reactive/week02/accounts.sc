@@ -1,7 +1,5 @@
-//package reactive.week02
 import frp._
 import reactive.week02.{BankAccount}
-
 object accounts {
   def consolidated(accts: List[BankAccount]): Signal[Int] =
     Signal(accts.map(_.balance()).sum)

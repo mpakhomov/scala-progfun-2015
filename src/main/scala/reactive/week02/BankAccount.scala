@@ -1,6 +1,6 @@
 package reactive.week02
 
-import frpodersky.Var
+import frp.Var
 
 
 /**
