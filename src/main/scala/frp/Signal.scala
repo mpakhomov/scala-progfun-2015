@@ -1,33 +1,48 @@
 package frp
 
+import scala.util.DynamicVariable
+
 class Signal[T](expr: => T) {
   import Signal._
-  def apply(): T = {
-    observers += caller.value
-    assert(!caller.value.observers.contains(this),
-      "Cyclic signal definition")
-    myValue
-  }
   private var myExpr: () => T = _
   private var myValue: T = _
   private var observers: Set[Signal[_]] = Set()
+  private var observed: List[Signal[_]] = Nil
+
   update(expr)
+
+  protected def computeValue(): Unit = {
+    for (sig <- observed) sig.observers -= this
+    observed = Nil
+
+    val newValue: T = caller.withValue(this)(myExpr())
+    //    if (myValue != newValue) {
+    myValue = newValue
+    val obs = observers
+    observers = Set()
+    obs.foreach(_.computeValue())
+    //    }
+  }
 
   protected def update(expr: => T): Unit = {
     myExpr = () => expr
     computeValue()
   }
 
-  protected def computeValue(): Unit = {
-    val newValue: T = caller.withValue(this)(myExpr())
-    if (myValue != newValue) {
-      myValue = newValue
-      val obs = observers
-      observers = Set()
-      obs.foreach(_.computeValue())
-    }
+  def apply(): T = {
+    observers += caller.value
+    assert(!caller.value.observers.contains(this), "Cyclic signal definition")
+    caller.value.observed ::= this
+    myValue
   }
+}
 
+class Var[T](expr: => T) extends Signal[T](expr) {
+  override def update(expr: => T): Unit = super.update(expr)
+}
+
+object Var {
+  def apply[T](expr: => T) = new Var(expr)
 }
 
 object NoSignal extends Signal[Nothing](???) {
@@ -35,7 +50,7 @@ object NoSignal extends Signal[Nothing](???) {
 }
 
 object Signal {
-  //private val caller = new DynamicVariable[Signal[_]](NoSignal)
-  private var caller = new StackableVariable[Signal[_]](NoSignal)
+//  private val caller = new DynamicVariable[Signal[_]](NoSignal)
+  private val caller = new StackableVariable[Signal[_]](NoSignal)
   def apply[T](expr: => T) = new Signal(expr)
 }
