@@ -1,3 +1,5 @@
+import scala.annotation.tailrec
+
 val f: PartialFunction[String, String] = {case "Ping" => "Pong"}
 
 f.isDefinedAt("Ping")

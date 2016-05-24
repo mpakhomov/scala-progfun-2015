@@ -1,3 +1,17 @@
+val n = 13
+def from(n: Int): Stream[Int] = n#:: from(n + 1)
+def sieve(s: Stream[Int]): Stream[Int] =
+  s.head #:: sieve(s.tail filter (_ % s.head != 0))
+val primes = sieve(from(2))
+def isPrime(x: Int) = primes.take(n).contains(x)
+
+for {
+  i <- 1 until n
+  j <- 1 until i
+  if (isPrime(i + j))
+} yield (i, j)
+
+
 val list = List(1, 2, 3, 4)
 val list2 = List(5, 6, 7, 8)
 
