@@ -95,6 +95,7 @@ object GeneratorTest extends App {
   println(booleanGenerator.generate)
   println(pairsGenerator.generate)
 
+  for (_ <- 1 to 10)  { println(Generator.oneOf("red", "green", "blue").generate) }
   1 to 5 foreach { _ => println(listGenerator.generate) }
 // for (i <- 1 to 5) println(listGenerator.generate)
 // (1 to 5) map { i  => println(listGenerator.generate) }

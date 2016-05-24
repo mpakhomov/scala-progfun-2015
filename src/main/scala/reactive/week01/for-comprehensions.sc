@@ -11,6 +11,22 @@ for {
   if (isPrime(i + j))
 } yield (i, j)
 
+for {
+  i <- 1 until n
+  j <- (1 until i).withFilter(j => isPrime(i + j))
+} yield (i, j)
+
+(1 until n).flatMap( i =>
+  for {
+    j <- (1 until i).withFilter(j => isPrime(i + j))
+  } yield (i, j)
+)
+
+(1 until n).flatMap( i =>
+  (1 until i)
+    .withFilter(j => isPrime(i + j))
+    .map(j => (i, j))
+)
 
 val list = List(1, 2, 3, 4)
 val list2 = List(5, 6, 7, 8)
